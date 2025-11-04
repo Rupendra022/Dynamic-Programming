@@ -1,0 +1,28 @@
+class Solution {
+    public int longestStrChain(String[] words) {
+        // Step 1: Sort words by length
+        Arrays.sort(words, (a, b) -> a.length() - b.length());
+
+        // Step 2: Map to store the longest chain ending with each word
+        Map<String, Integer> dp = new HashMap<>();
+        int maxLen = 1;
+
+        // Step 3: Process each word
+        for (String word : words) {
+            int best = 1; // at least the word itself
+
+            // Step 4: Try removing each char to find predecessors
+            for (int i = 0; i < word.length(); i++) {
+                String pred = word.substring(0, i) + word.substring(i + 1);
+                if (dp.containsKey(pred)) {
+                    best = Math.max(best, dp.get(pred) + 1);
+                }
+            }
+
+            dp.put(word, best);
+            maxLen = Math.max(maxLen, best);
+        }
+
+        return maxLen;
+    }
+}
